@@ -9,18 +9,19 @@
 <body>
 
 <div class="container">
+
     <h1>Hotel Booking Form</h1>
 
     <form id="bookingForm">
 
-        <!-- Check-in -->
+        <!-- Check-in Date -->
         <div class="form-group">
             <label for="checkin">Check-in Date</label>
             <input type="date" id="checkin" required>
             <small class="error" id="checkinError"></small>
         </div>
 
-        <!-- Check-out -->
+        <!-- Check-out Date -->
         <div class="form-group">
             <label for="checkout">Check-out Date</label>
             <input type="date" id="checkout" required>
@@ -32,9 +33,9 @@
             <label for="roomType">Room Type</label>
             <select id="roomType" required>
                 <option value="">Select Room</option>
-                <option value="Single">Single</option>
-                <option value="Double">Double</option>
-                <option value="Suite">Suite</option>
+                <option value="Single">Single - ₹1000/night</option>
+                <option value="Double">Double - ₹2000/night</option>
+                <option value="Suite">Suite - ₹3500/night</option>
             </select>
             <small class="error" id="roomError"></small>
         </div>
@@ -56,8 +57,18 @@
         <button type="submit">Book Now</button>
 
     </form>
+
+    <!-- Booking Summary Section -->
+    <div class="summary" id="bookingSummary" style="display: none;">
+        <h2>Booking Summary</h2>
+        <p><strong>Room Type:</strong> <span id="summaryRoom"></span></p>
+        <p><strong>Total Nights:</strong> <span id="summaryNights"></span></p>
+        <p><strong>Total Price:</strong> ₹<span id="summaryPrice"></span></p>
+    </div>
+
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>

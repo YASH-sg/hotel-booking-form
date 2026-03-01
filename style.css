@@ -66,3 +66,10 @@ button {
 button:hover {
     transform: scale(1.03);
 }
+.summary {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f1f8ff;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
