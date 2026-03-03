@@ -16,7 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const summaryNights = document.getElementById("summaryNights");
     const summaryPrice = document.getElementById("summaryPrice");
 
-    // Room Prices
+    const successPopup = document.getElementById("successPopup");
+
     const roomPrices = {
         "Single": 1000,
         "Double": 2000,
@@ -38,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener("submit", function (e) {
 
-        e.preventDefault(); // Prevent default submission
+        e.preventDefault();
 
         let isValid = true;
 
@@ -51,13 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
         roomError.textContent = "";
         guestError.textContent = "";
 
-        // Check-in validation
+        // Validation
         if (!checkin.value) {
             checkinError.textContent = "Please select a check-in date.";
             isValid = false;
         }
 
-        // Check-out validation
         if (!checkout.value) {
             checkoutError.textContent = "Please select a check-out date.";
             isValid = false;
@@ -68,13 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
             isValid = false;
         }
 
-        // Room validation
         if (!roomType.value) {
             roomError.textContent = "Please select a room type.";
             isValid = false;
         }
 
-        // Guest validation
         if (!guests.value || guests.value < 1) {
             guestError.textContent = "Please enter a valid number of guests.";
             isValid = false;
@@ -82,22 +80,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (isValid) {
 
-            // Calculate nights
             const timeDiff = checkoutDate - checkinDate;
             const nights = timeDiff / (1000 * 60 * 60 * 24);
 
-            // Calculate price
             const selectedRoom = roomType.value;
             const pricePerNight = roomPrices[selectedRoom];
             const totalPrice = nights * pricePerNight;
 
-            // Update summary
             summaryRoom.textContent = selectedRoom;
             summaryNights.textContent = nights;
             summaryPrice.textContent = totalPrice;
 
             summary.style.display = "block";
+            successPopup.style.display = "flex";
         }
     });
+
+    // Close popup function
+    window.closePopup = function () {
+        successPopup.style.display = "none";
+        form.reset();
+        summary.style.display = "none";
+
+        // Reset min dates again
+        checkin.setAttribute("min", today);
+        checkout.setAttribute("min", today);
+    };
 
 });
