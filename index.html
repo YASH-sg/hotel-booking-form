@@ -1,80 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Hotel Booking Form</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aurum Grand — Reserve Your Stay</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { light: '#e8d5a3', DEFAULT: '#c9a84c', dark: '#9b7a2e' },
+            cream: '#faf7f2', charcoal: '#1a1814', mink: '#3d3530',
+          },
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body: ['Montserrat', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="min-h-screen bg-pattern flex items-center justify-center px-4 py-12">
 
-<div class="container">
+  <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none"></canvas>
 
-    <h1>Hotel Booking Form</h1>
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="corner-ornament tl fixed top-6 left-6 w-12 h-12 border-t border-l border-gold/20"></div>
+    <div class="corner-ornament tr fixed top-6 right-6 w-12 h-12 border-t border-r border-gold/20"></div>
+    <div class="corner-ornament bl fixed bottom-6 left-6 w-12 h-12 border-b border-l border-gold/20"></div>
+    <div class="corner-ornament br fixed bottom-6 right-6 w-12 h-12 border-b border-r border-gold/20"></div>
+  </div>
 
-    <form id="bookingForm">
+  <div class="w-full max-w-6xl form-card">
 
-    <div class="form-grid">
+    <div class="text-center mb-8">
+      <div class="monogram inline-flex items-center justify-center w-14 h-14 border border-gold/40 mb-4"
+           style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
+        <span class="font-display text-gold text-xl font-light italic">A</span>
+      </div>
+      <p class="header-sub field-label tracking-widest mb-1 text-gold/60">Aurum Grand Hotel</p>
+      <h1 class="header-title font-display text-4xl md:text-5xl text-cream font-light italic">Reserve Your Stay</h1>
+      <div class="gold-line h-px w-32 mx-auto mt-4 header-line"></div>
+    </div>
 
-        <div class="form-group">
-            <label for="checkin">Check-in Date</label>
-            <input type="date" id="checkin" required>
-            <small class="error" id="checkinError"></small>
+    <!-- Progress -->
+    <div class="progress-wrap mb-8">
+      <div class="flex items-center justify-center">
+        <div class="step-item" data-step="1"><div class="step-circle">1</div><span class="step-label">Dates</span></div>
+        <div class="step-connector" id="conn-1"></div>
+        <div class="step-item" data-step="2"><div class="step-circle">2</div><span class="step-label">Room</span></div>
+        <div class="step-connector" id="conn-2"></div>
+        <div class="step-item" data-step="3"><div class="step-circle">3</div><span class="step-label">Guests</span></div>
+        <div class="step-connector" id="conn-3"></div>
+        <div class="step-item" data-step="4"><div class="step-circle">4</div><span class="step-label">Review</span></div>
+      </div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-6 items-start">
+
+      <!-- FORM -->
+      <div class="flex-1 border border-gold/20 bg-white/[0.03] backdrop-blur-sm p-8 form-inner">
+        <form id="bookingForm" novalidate>
+
+          <!-- Step 1 -->
+          <div class="step-panel" id="step-1">
+            <h2 class="font-display text-2xl text-cream italic mb-6">Select Your Dates</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div class="field-group">
+                <label class="field-label block mb-2">Check-in Date <span class="text-red-400">*</span></label>
+                <input type="date" id="checkin" class="luxury-input w-full px-4 py-3" required />
+                <p class="error-msg" id="checkinError">Please select a check-in date.</p>
+              </div>
+              <div class="field-group">
+                <label class="field-label block mb-2">Check-out Date <span class="text-red-400">*</span></label>
+                <input type="date" id="checkout" class="luxury-input w-full px-4 py-3" required />
+                <p class="error-msg" id="checkoutError">Check-out must be after check-in.</p>
+              </div>
+            </div>
+            <div id="staySummary" class="stay-pill hidden">
+              ✦ <span id="nightCount">0</span> night<span id="nightPlural">s</span> selected
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-panel hidden" id="step-2">
+            <h2 class="font-display text-2xl text-cream italic mb-6">Choose Your Room</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3" id="roomCards"></div>
+            <input type="hidden" id="roomType" />
+            <p class="error-msg" id="roomTypeError">Please select a room type.</p>
+            <div id="roomPreview" class="hidden mt-5 p-5 border border-gold/20 bg-gold/5 room-preview-box">
+              <div class="flex gap-4 items-start">
+                <div id="previewEmoji" class="text-4xl w-16 h-16 flex items-center justify-center bg-gold/10 flex-shrink-0"></div>
+                <div class="flex-1">
+                  <h3 id="previewName" class="font-display text-gold text-xl italic mb-1"></h3>
+                  <p id="previewDesc" class="text-cream/50 text-xs leading-relaxed mb-3"></p>
+                  <div id="previewAmenities" class="flex flex-wrap gap-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-panel hidden" id="step-3">
+            <h2 class="font-display text-2xl text-cream italic mb-6">Guest Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div class="field-group">
+                <label class="field-label block mb-2">Full Name <span class="text-red-400">*</span></label>
+                <input type="text" id="guestName" class="luxury-input w-full px-4 py-3" placeholder="e.g. James Ashworth" />
+                <p class="error-msg" id="guestNameError">Please enter your full name.</p>
+              </div>
+              <div class="field-group">
+                <label class="field-label block mb-2">Email Address <span class="text-red-400">*</span></label>
+                <input type="email" id="guestEmail" class="luxury-input w-full px-4 py-3" placeholder="you@example.com" />
+                <p class="error-msg" id="guestEmailError">Please enter a valid email.</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div class="field-group">
+                <label class="field-label block mb-2">Adults <span class="text-red-400">*</span></label>
+                <div class="flex items-center gap-2">
+                  <button type="button" class="counter-btn" onclick="changeCount('adults',-1)">&#8722;</button>
+                  <span class="counter-val" id="adultsDisplay">1</span>
+                  <button type="button" class="counter-btn" onclick="changeCount('adults',1)">+</button>
+                  <input type="hidden" id="adults" value="1" />
+                  <span class="text-cream/30 text-xs ml-2">max 4</span>
+                </div>
+                <p class="error-msg" id="adultsError">At least 1 adult required.</p>
+              </div>
+              <div class="field-group">
+                <label class="field-label block mb-2">Children <span class="text-cream/30 font-light normal-case text-xs">(under 12)</span></label>
+                <div class="flex items-center gap-2">
+                  <button type="button" class="counter-btn" onclick="changeCount('children',-1)">&#8722;</button>
+                  <span class="counter-val" id="childrenDisplay">0</span>
+                  <button type="button" class="counter-btn" onclick="changeCount('children',1)">+</button>
+                  <input type="hidden" id="children" value="0" />
+                  <span class="text-cream/30 text-xs ml-2">max 4</span>
+                </div>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label block mb-2">Special Requests <span class="text-cream/30 font-light normal-case text-xs ml-1">Optional</span></label>
+              <textarea id="specialRequests" rows="3" class="luxury-input w-full px-4 py-3 resize-none"
+                placeholder="E.g. late check-in, anniversary setup, dietary preferences..."></textarea>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-panel hidden" id="step-4">
+            <h2 class="font-display text-2xl text-cream italic mb-6">Review &amp; Confirm</h2>
+            <div id="reviewContent" class="space-y-3 mb-6"></div>
+            <div class="border border-gold/20 p-5 bg-gold/5 mb-6">
+              <p class="field-label mb-4 flex items-center gap-3">
+                <span class="flex-1 h-px bg-gold/20"></span>Price Breakdown<span class="flex-1 h-px bg-gold/20"></span>
+              </p>
+              <div class="space-y-2" id="priceLines"></div>
+              <div class="gold-line h-px my-4"></div>
+              <div class="flex justify-between items-center">
+                <span class="field-label text-cream/80">Total Estimate</span>
+                <span id="totalPrice" class="font-display text-3xl text-gold italic"></span>
+              </div>
+              <p class="text-cream/25 text-xs mt-2 font-body">* Taxes and service charges included. Final amount confirmed at check-in.</p>
+            </div>
+            <div id="successBanner" class="hidden border border-gold/40 bg-gold/10 px-6 py-5 text-center mb-4">
+              <p class="font-display text-gold text-2xl italic mb-1">Your reservation has been received.</p>
+              <p class="text-cream/50 text-xs tracking-widest">Our concierge will contact you shortly to confirm.</p>
+            </div>
+          </div>
+
+          <!-- Nav Buttons -->
+          <div class="flex items-center justify-between mt-8 pt-6 border-t border-gold/10">
+            <button type="button" id="btnBack" class="btn-ghost hidden">&#8592; Back</button>
+            <div class="ml-auto">
+              <button type="button" id="btnNext" class="btn-luxury px-10 py-3">Next &#8594;</button>
+              <button type="submit" id="btnSubmit" class="btn-luxury px-10 py-3 hidden">
+                <span class="btn-text">Confirm Reservation</span>
+                <span class="btn-loader hidden">Processing...</span>
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="lg:w-72 xl:w-80 border border-gold/20 bg-white/[0.03] backdrop-blur-sm p-6 sticky top-8 sidebar-panel">
+        <p class="field-label mb-5 flex items-center gap-2">
+          <span class="flex-1 h-px bg-gold/20"></span>Your Booking<span class="flex-1 h-px bg-gold/20"></span>
+        </p>
+        <div id="sidebarEmpty" class="text-center py-6">
+          <p class="text-cream/20 text-xs tracking-widest leading-relaxed">Fill in the form<br/>to see your summary</p>
         </div>
-
-        <div class="form-group">
-            <label for="checkout">Check-out Date</label>
-            <input type="date" id="checkout" required>
-            <small class="error" id="checkoutError"></small>
+        <div id="sidebarContent" class="hidden space-y-4">
+          <div class="summary-row">
+            <span class="summary-icon">&#128197;</span>
+            <div><p class="summary-key">Dates</p><p class="summary-val" id="sum-dates-val">&#8212;</p><p class="summary-sub" id="sum-nights-val"></p></div>
+          </div>
+          <div class="summary-row">
+            <span class="summary-icon" id="sum-room-icon">&#127968;</span>
+            <div><p class="summary-key">Room</p><p class="summary-val" id="sum-room-val">&#8212;</p><p class="summary-sub" id="sum-room-rate"></p></div>
+          </div>
+          <div class="summary-row">
+            <span class="summary-icon">&#128100;</span>
+            <div><p class="summary-key">Guests</p><p class="summary-val" id="sum-guests-val">&#8212;</p></div>
+          </div>
+          <div class="summary-row">
+            <span class="summary-icon">&#10022;</span>
+            <div><p class="summary-key">Guest</p><p class="summary-val" id="sum-name-val">&#8212;</p><p class="summary-sub" id="sum-email-val"></p></div>
+          </div>
         </div>
-
-        <div class="form-group">
-            <label for="roomType">Room Type</label>
-            <select id="roomType" required>
-                <option value="">Select Room</option>
-                <option value="Single">Single</option>
-                <option value="Double">Double</option>
-                <option value="Suite">Suite</option>
-            </select>
-            <small class="error" id="roomError"></small>
+        <div id="sidebarPriceWrap" class="hidden">
+          <div class="gold-line h-px my-5"></div>
+          <div class="flex justify-between items-center">
+            <span class="text-cream/40 text-xs tracking-widest uppercase">Estimate</span>
+            <span id="sidebarTotal" class="font-display text-2xl text-gold italic">&#8212;</span>
+          </div>
         </div>
-
-        <div class="form-group">
-            <label for="guests">Number of Guests</label>
-            <input type="number" id="guests" min="1" required>
-            <small class="error" id="guestError"></small>
-        </div>
-
-        <div class="form-group full-width">
-            <label for="requests">Special Requests</label>
-            <textarea id="requests" rows="4"></textarea>
-        </div>
+      </div>
 
     </div>
 
-    <button type="submit">Book Now</button>
-
-</form>
-
-    <!-- Booking Summary Section -->
-    <div class="summary" id="bookingSummary" style="display: none;">
-        <h2>Booking Summary</h2>
-        <p><strong>Room Type:</strong> <span id="summaryRoom"></span></p>
-        <p><strong>Total Nights:</strong> <span id="summaryNights"></span></p>
-        <p><strong>Total Price:</strong> ₹<span id="summaryPrice"></span></p>
+    <div class="text-center mt-8 footer-block">
+      <div class="gold-line h-px w-24 mx-auto mb-3"></div>
+      <p class="text-cream/20 text-xs tracking-widest">&#169; 2024 Aurum Grand Hotel. All rights reserved.</p>
     </div>
+  </div>
 
-    <div class="success-popup" id="successPopup">
-    <div class="success-box">
-        <h2>Booking Confirmed 🎉</h2>
-        <p>Your room has been successfully booked.</p>
-        <button onclick="closePopup()">Close</button>
-    </div>
-</div>
-
-</div>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
