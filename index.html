@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aurum Grand — Reserve Your Stay</title>
+  <title>Aurum Grand Hotel — Where Luxury Meets Legacy</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             gold: { light: '#e8d5a3', DEFAULT: '#c9a84c', dark: '#9b7a2e' },
-            cream: '#faf7f2', charcoal: '#1a1814', mink: '#3d3530',
+            cream: '#faf7f2', charcoal: '#1a1814', mink: '#3d3530', obsidian: '#0e0c09',
           },
           fontFamily: {
             display: ['Cormorant Garamond', 'serif'],
@@ -24,210 +24,641 @@
   </script>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen bg-pattern flex items-center justify-center px-4 py-12">
+<body class="bg-obsidian text-cream overflow-x-hidden">
 
-  <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none"></canvas>
+  <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none" style="z-index:0;opacity:0.35;"></canvas>
 
-  <div class="fixed inset-0 pointer-events-none overflow-hidden">
-    <div class="corner-ornament tl fixed top-6 left-6 w-12 h-12 border-t border-l border-gold/20"></div>
-    <div class="corner-ornament tr fixed top-6 right-6 w-12 h-12 border-t border-r border-gold/20"></div>
-    <div class="corner-ornament bl fixed bottom-6 left-6 w-12 h-12 border-b border-l border-gold/20"></div>
-    <div class="corner-ornament br fixed bottom-6 right-6 w-12 h-12 border-b border-r border-gold/20"></div>
+  <div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index:1;">
+    <div class="corner-ornament tl fixed top-5 left-5 w-10 h-10 border-t border-l border-gold/20"></div>
+    <div class="corner-ornament tr fixed top-5 right-5 w-10 h-10 border-t border-r border-gold/20"></div>
+    <div class="corner-ornament bl fixed bottom-5 left-5 w-10 h-10 border-b border-l border-gold/20"></div>
+    <div class="corner-ornament br fixed bottom-5 right-5 w-10 h-10 border-b border-r border-gold/20"></div>
   </div>
 
-  <div class="w-full max-w-6xl form-card">
-
-    <div class="text-center mb-8">
-      <div class="monogram inline-flex items-center justify-center w-14 h-14 border border-gold/40 mb-4"
-           style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
-        <span class="font-display text-gold text-xl font-light italic">A</span>
+  <!-- ═══ NAV ═══ -->
+  <nav id="mainNav" class="fixed top-0 left-0 right-0 z-50 nav-bar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 border border-gold/50 flex items-center justify-center"
+             style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
+          <span class="font-display text-gold text-sm italic">A</span>
+        </div>
+        <span class="font-display text-cream/90 text-lg italic tracking-wide">Aurum Grand</span>
       </div>
-      <p class="header-sub field-label tracking-widest mb-1 text-gold/60">Aurum Grand Hotel</p>
-      <h1 class="header-title font-display text-4xl md:text-5xl text-cream font-light italic">Reserve Your Stay</h1>
-      <div class="gold-line h-px w-32 mx-auto mt-4 header-line"></div>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home"       class="nav-link">Home</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#rooms"      class="nav-link">Rooms</a>
+        <a href="#dining"     class="nav-link">Dining</a>
+        <a href="#gallery"    class="nav-link">Gallery</a>
+        <a href="#reserve"    class="nav-cta">Reserve</a>
+      </div>
+      <button id="menuBtn" class="md:hidden text-gold/70 hover:text-gold">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden border-t border-gold/10 bg-obsidian/95 backdrop-blur-md px-6 py-4 space-y-1">
+      <a href="#home"       class="mobile-nav-link">Home</a>
+      <a href="#experience" class="mobile-nav-link">Experience</a>
+      <a href="#rooms"      class="mobile-nav-link">Rooms</a>
+      <a href="#dining"     class="mobile-nav-link">Dining</a>
+      <a href="#gallery"    class="mobile-nav-link">Gallery</a>
+      <a href="#reserve"    class="mobile-nav-cta">Reserve</a>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="home" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+    <!-- Real hotel background image -->
+    <div class="hero-img absolute inset-0">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80&auto=format&fit=crop"
+           alt="Aurum Grand Hotel"
+           class="w-full h-full object-cover object-center"/>
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-obsidian/75 via-obsidian/45 to-obsidian/90"></div>
+    <div class="hero-grid absolute inset-0 opacity-[0.03]"></div>
+    <div class="hero-ring  absolute rounded-full border border-gold/5" style="width:700px;height:700px;"></div>
+    <div class="hero-ring-2 absolute rounded-full border border-gold/4" style="width:950px;height:950px;"></div>
+    <div class="hero-ring-3 absolute rounded-full border border-gold/6" style="width:500px;height:500px;"></div>
+
+    <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+      <p class="hero-sub font-body text-xs tracking-[0.45em] uppercase text-gold/80 mb-6">Est. 1924 &nbsp;&middot;&nbsp; Five Diamond Luxury</p>
+      <h1 class="hero-title font-display text-7xl md:text-9xl text-cream font-light leading-none mb-1">Aurum</h1>
+      <h2 class="hero-subtitle font-display text-4xl md:text-6xl text-gold italic font-light mb-8">Grand Hotel</h2>
+      <div class="gold-line h-px w-40 mx-auto mb-8 hero-divider"></div>
+      <p class="hero-tagline font-display text-xl md:text-2xl text-cream/60 italic font-light mb-12 max-w-2xl mx-auto leading-relaxed">
+        Where every detail whispers of another era,<br/>and every moment becomes a memory.
+      </p>
+      <div class="hero-btns flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <a href="#reserve"    class="btn-luxury px-12 py-4 text-sm">Reserve Your Stay</a>
+        <a href="#experience" class="btn-ghost  px-12 py-4 text-sm">Discover More</a>
+      </div>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-wrap mb-8">
-      <div class="flex items-center justify-center">
-        <div class="step-item" data-step="1"><div class="step-circle">1</div><span class="step-label">Dates</span></div>
-        <div class="step-connector" id="conn-1"></div>
-        <div class="step-item" data-step="2"><div class="step-circle">2</div><span class="step-label">Room</span></div>
-        <div class="step-connector" id="conn-2"></div>
-        <div class="step-item" data-step="3"><div class="step-circle">3</div><span class="step-label">Guests</span></div>
-        <div class="step-connector" id="conn-3"></div>
-        <div class="step-item" data-step="4"><div class="step-circle">4</div><span class="step-label">Review</span></div>
-      </div>
+    <div class="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <span class="font-body text-xs tracking-[0.3em] uppercase text-cream/25">Scroll</span>
+      <div class="w-px h-10 bg-gradient-to-b from-gold/40 to-transparent"></div>
     </div>
+  </section>
 
-    <div class="flex flex-col lg:flex-row gap-6 items-start">
+  <!-- ═══ STATS ═══ -->
+  <section class="border-y border-gold/10 bg-white/[0.02] py-8">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="stat-item"><p class="font-display text-4xl text-gold italic">100</p><p class="stat-label">Years of Excellence</p></div>
+      <div class="stat-item"><p class="font-display text-4xl text-gold italic">248</p><p class="stat-label">Luxury Suites</p></div>
+      <div class="stat-item"><p class="font-display text-4xl text-gold italic">12</p><p class="stat-label">Dining Venues</p></div>
+      <div class="stat-item"><p class="font-display text-4xl text-gold italic">5&#9733;</p><p class="stat-label">World Recognition</p></div>
+    </div>
+  </section>
 
-      <!-- FORM -->
-      <div class="flex-1 border border-gold/20 bg-white/[0.03] backdrop-blur-sm p-8 form-inner">
-        <form id="bookingForm" novalidate>
-
-          <!-- Step 1 -->
-          <div class="step-panel" id="step-1">
-            <h2 class="font-display text-2xl text-cream italic mb-6">Select Your Dates</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-              <div class="field-group">
-                <label class="field-label block mb-2">Check-in Date <span class="text-red-400">*</span></label>
-                <input type="date" id="checkin" class="luxury-input w-full px-4 py-3" required />
-                <p class="error-msg" id="checkinError">Please select a check-in date.</p>
-              </div>
-              <div class="field-group">
-                <label class="field-label block mb-2">Check-out Date <span class="text-red-400">*</span></label>
-                <input type="date" id="checkout" class="luxury-input w-full px-4 py-3" required />
-                <p class="error-msg" id="checkoutError">Check-out must be after check-in.</p>
-              </div>
-            </div>
-            <div id="staySummary" class="stay-pill hidden">
-              ✦ <span id="nightCount">0</span> night<span id="nightPlural">s</span> selected
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="step-panel hidden" id="step-2">
-            <h2 class="font-display text-2xl text-cream italic mb-6">Choose Your Room</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3" id="roomCards"></div>
-            <input type="hidden" id="roomType" />
-            <p class="error-msg" id="roomTypeError">Please select a room type.</p>
-            <div id="roomPreview" class="hidden mt-5 p-5 border border-gold/20 bg-gold/5 room-preview-box">
-              <div class="flex gap-4 items-start">
-                <div id="previewEmoji" class="text-4xl w-16 h-16 flex items-center justify-center bg-gold/10 flex-shrink-0"></div>
-                <div class="flex-1">
-                  <h3 id="previewName" class="font-display text-gold text-xl italic mb-1"></h3>
-                  <p id="previewDesc" class="text-cream/50 text-xs leading-relaxed mb-3"></p>
-                  <div id="previewAmenities" class="flex flex-wrap gap-2"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="step-panel hidden" id="step-3">
-            <h2 class="font-display text-2xl text-cream italic mb-6">Guest Details</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-              <div class="field-group">
-                <label class="field-label block mb-2">Full Name <span class="text-red-400">*</span></label>
-                <input type="text" id="guestName" class="luxury-input w-full px-4 py-3" placeholder="e.g. James Ashworth" />
-                <p class="error-msg" id="guestNameError">Please enter your full name.</p>
-              </div>
-              <div class="field-group">
-                <label class="field-label block mb-2">Email Address <span class="text-red-400">*</span></label>
-                <input type="email" id="guestEmail" class="luxury-input w-full px-4 py-3" placeholder="you@example.com" />
-                <p class="error-msg" id="guestEmailError">Please enter a valid email.</p>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-              <div class="field-group">
-                <label class="field-label block mb-2">Adults <span class="text-red-400">*</span></label>
-                <div class="flex items-center gap-2">
-                  <button type="button" class="counter-btn" onclick="changeCount('adults',-1)">&#8722;</button>
-                  <span class="counter-val" id="adultsDisplay">1</span>
-                  <button type="button" class="counter-btn" onclick="changeCount('adults',1)">+</button>
-                  <input type="hidden" id="adults" value="1" />
-                  <span class="text-cream/30 text-xs ml-2">max 4</span>
-                </div>
-                <p class="error-msg" id="adultsError">At least 1 adult required.</p>
-              </div>
-              <div class="field-group">
-                <label class="field-label block mb-2">Children <span class="text-cream/30 font-light normal-case text-xs">(under 12)</span></label>
-                <div class="flex items-center gap-2">
-                  <button type="button" class="counter-btn" onclick="changeCount('children',-1)">&#8722;</button>
-                  <span class="counter-val" id="childrenDisplay">0</span>
-                  <button type="button" class="counter-btn" onclick="changeCount('children',1)">+</button>
-                  <input type="hidden" id="children" value="0" />
-                  <span class="text-cream/30 text-xs ml-2">max 4</span>
-                </div>
-              </div>
-            </div>
-            <div class="field-group">
-              <label class="field-label block mb-2">Special Requests <span class="text-cream/30 font-light normal-case text-xs ml-1">Optional</span></label>
-              <textarea id="specialRequests" rows="3" class="luxury-input w-full px-4 py-3 resize-none"
-                placeholder="E.g. late check-in, anniversary setup, dietary preferences..."></textarea>
-            </div>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="step-panel hidden" id="step-4">
-            <h2 class="font-display text-2xl text-cream italic mb-6">Review &amp; Confirm</h2>
-            <div id="reviewContent" class="space-y-3 mb-6"></div>
-            <div class="border border-gold/20 p-5 bg-gold/5 mb-6">
-              <p class="field-label mb-4 flex items-center gap-3">
-                <span class="flex-1 h-px bg-gold/20"></span>Price Breakdown<span class="flex-1 h-px bg-gold/20"></span>
-              </p>
-              <div class="space-y-2" id="priceLines"></div>
-              <div class="gold-line h-px my-4"></div>
-              <div class="flex justify-between items-center">
-                <span class="field-label text-cream/80">Total Estimate</span>
-                <span id="totalPrice" class="font-display text-3xl text-gold italic"></span>
-              </div>
-              <p class="text-cream/25 text-xs mt-2 font-body">* Taxes and service charges included. Final amount confirmed at check-in.</p>
-            </div>
-            <div id="successBanner" class="hidden border border-gold/40 bg-gold/10 px-6 py-5 text-center mb-4">
-              <p class="font-display text-gold text-2xl italic mb-1">Your reservation has been received.</p>
-              <p class="text-cream/50 text-xs tracking-widest">Our concierge will contact you shortly to confirm.</p>
-            </div>
-          </div>
-
-          <!-- Nav Buttons -->
-          <div class="flex items-center justify-between mt-8 pt-6 border-t border-gold/10">
-            <button type="button" id="btnBack" class="btn-ghost hidden">&#8592; Back</button>
-            <div class="ml-auto">
-              <button type="button" id="btnNext" class="btn-luxury px-10 py-3">Next &#8594;</button>
-              <button type="submit" id="btnSubmit" class="btn-luxury px-10 py-3 hidden">
-                <span class="btn-text">Confirm Reservation</span>
-                <span class="btn-loader hidden">Processing...</span>
-              </button>
-            </div>
-          </div>
-
-        </form>
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section id="experience" class="py-28 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20">
+        <p class="section-tag">The Aurum Difference</p>
+        <h2 class="section-title">An Unmatched Experience</h2>
+        <div class="gold-line h-px w-24 mx-auto mt-5"></div>
       </div>
 
-      <!-- SIDEBAR -->
-      <div class="lg:w-72 xl:w-80 border border-gold/20 bg-white/[0.03] backdrop-blur-sm p-6 sticky top-8 sidebar-panel">
-        <p class="field-label mb-5 flex items-center gap-2">
-          <span class="flex-1 h-px bg-gold/20"></span>Your Booking<span class="flex-1 h-px bg-gold/20"></span>
-        </p>
-        <div id="sidebarEmpty" class="text-center py-6">
-          <p class="text-cream/20 text-xs tracking-widest leading-relaxed">Fill in the form<br/>to see your summary</p>
+      <!-- Experience: image left, cards right -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+        <div class="reveal-item overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&q=80&auto=format&fit=crop"
+               alt="Luxury hotel lobby" class="w-full h-96 object-cover object-center experience-img"/>
         </div>
-        <div id="sidebarContent" class="hidden space-y-4">
-          <div class="summary-row">
-            <span class="summary-icon">&#128197;</span>
-            <div><p class="summary-key">Dates</p><p class="summary-val" id="sum-dates-val">&#8212;</p><p class="summary-sub" id="sum-nights-val"></p></div>
+        <div class="space-y-6">
+          <div class="experience-card reveal-item">
+            <div class="flex items-start gap-5">
+              <div class="exp-icon-wrap flex-shrink-0">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display text-xl text-cream italic mb-2">Bespoke Concierge</h3>
+                <p class="font-body text-cream/40 text-sm leading-relaxed">Your personal concierge anticipates every desire — from private transfers to curated cultural experiences crafted just for you.</p>
+              </div>
+            </div>
           </div>
-          <div class="summary-row">
-            <span class="summary-icon" id="sum-room-icon">&#127968;</span>
-            <div><p class="summary-key">Room</p><p class="summary-val" id="sum-room-val">&#8212;</p><p class="summary-sub" id="sum-room-rate"></p></div>
+          <div class="experience-card reveal-item" style="animation-delay:0.15s">
+            <div class="flex items-start gap-5">
+              <div class="exp-icon-wrap flex-shrink-0">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display text-xl text-cream italic mb-2">Master Sommelier</h3>
+                <p class="font-body text-cream/40 text-sm leading-relaxed">Our cellars hold over 4,000 vintages. Our resident sommelier guides you through pairings that transform dinner into theatre.</p>
+              </div>
+            </div>
           </div>
-          <div class="summary-row">
-            <span class="summary-icon">&#128100;</span>
-            <div><p class="summary-key">Guests</p><p class="summary-val" id="sum-guests-val">&#8212;</p></div>
-          </div>
-          <div class="summary-row">
-            <span class="summary-icon">&#10022;</span>
-            <div><p class="summary-key">Guest</p><p class="summary-val" id="sum-name-val">&#8212;</p><p class="summary-sub" id="sum-email-val"></p></div>
-          </div>
-        </div>
-        <div id="sidebarPriceWrap" class="hidden">
-          <div class="gold-line h-px my-5"></div>
-          <div class="flex justify-between items-center">
-            <span class="text-cream/40 text-xs tracking-widest uppercase">Estimate</span>
-            <span id="sidebarTotal" class="font-display text-2xl text-gold italic">&#8212;</span>
+          <div class="experience-card reveal-item" style="animation-delay:0.3s">
+            <div class="flex items-start gap-5">
+              <div class="exp-icon-wrap flex-shrink-0">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-display text-xl text-cream italic mb-2">Serene Wellness</h3>
+                <p class="font-body text-cream/40 text-sm leading-relaxed">An 8,000 sq ft sanctuary of calm. Surrender to ancient treatments administered by world-renowned therapists using rare botanicals.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
+  </section>
 
-    <div class="text-center mt-8 footer-block">
-      <div class="gold-line h-px w-24 mx-auto mb-3"></div>
-      <p class="text-cream/20 text-xs tracking-widest">&#169; 2024 Aurum Grand Hotel. All rights reserved.</p>
+  <!-- ═══ ROOMS ═══ -->
+  <section id="rooms" class="py-28 px-6 bg-white/[0.015]">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20">
+        <p class="section-tag">Curated Accommodations</p>
+        <h2 class="section-title">Rooms &amp; Suites</h2>
+        <div class="gold-line h-px w-24 mx-auto mt-5"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Classic Suite -->
+        <div class="showcase-room reveal-item">
+          <div class="room-visual">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=700&q=75&auto=format&fit=crop"
+                 alt="Classic Suite" class="room-img"/>
+            <div class="room-hover-overlay"><a href="#reserve" class="btn-luxury px-6 py-2 text-xs">Reserve</a></div>
+          </div>
+          <div class="room-info-box">
+            <div class="flex justify-between items-start">
+              <div><h3 class="font-display text-xl text-cream italic">Classic Suite</h3><p class="room-sub">Garden &amp; City Views</p></div>
+              <div class="text-right"><p class="font-display text-gold text-lg italic">$120</p><p class="room-sub">per night</p></div>
+            </div>
+            <div class="flex gap-2 mt-3 flex-wrap"><span class="room-tag">King Bed</span><span class="room-tag">Wi-Fi</span><span class="room-tag">Mini Bar</span></div>
+          </div>
+        </div>
+
+        <!-- Deluxe Double -->
+        <div class="showcase-room reveal-item" style="animation-delay:0.1s">
+          <div class="room-visual">
+            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=700&q=75&auto=format&fit=crop"
+                 alt="Deluxe Double" class="room-img"/>
+            <div class="room-hover-overlay"><a href="#reserve" class="btn-luxury px-6 py-2 text-xs">Reserve</a></div>
+          </div>
+          <div class="room-info-box">
+            <div class="flex justify-between items-start">
+              <div><h3 class="font-display text-xl text-cream italic">Deluxe Double</h3><p class="room-sub">Panoramic City View</p></div>
+              <div class="text-right"><p class="font-display text-gold text-lg italic">$260</p><p class="room-sub">per night</p></div>
+            </div>
+            <div class="flex gap-2 mt-3 flex-wrap"><span class="room-tag">King Bed</span><span class="room-tag">Concierge</span><span class="room-tag">Jacuzzi</span></div>
+          </div>
+        </div>
+
+        <!-- Grand Suite -->
+        <div class="showcase-room reveal-item" style="animation-delay:0.2s">
+          <div class="room-visual">
+            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=700&q=75&auto=format&fit=crop"
+                 alt="Grand Suite" class="room-img"/>
+            <div class="room-hover-overlay"><a href="#reserve" class="btn-luxury px-6 py-2 text-xs">Reserve</a></div>
+          </div>
+          <div class="room-info-box">
+            <div class="flex justify-between items-start">
+              <div><h3 class="font-display text-xl text-cream italic">Grand Suite</h3><p class="room-sub">Ocean &amp; Private Lounge</p></div>
+              <div class="text-right"><p class="font-display text-gold text-lg italic">$420</p><p class="room-sub">per night</p></div>
+            </div>
+            <div class="flex gap-2 mt-3 flex-wrap"><span class="room-tag">Butler</span><span class="room-tag">Ocean View</span><span class="room-tag">Jacuzzi</span></div>
+          </div>
+        </div>
+
+        <!-- Presidential Suite -->
+        <div class="showcase-room reveal-item" style="animation-delay:0.3s">
+          <div class="room-visual">
+            <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700&q=75&auto=format&fit=crop"
+                 alt="Presidential Suite" class="room-img"/>
+            <div class="room-hover-overlay"><a href="#reserve" class="btn-luxury px-6 py-2 text-xs">Reserve</a></div>
+          </div>
+          <div class="room-info-box">
+            <div class="flex justify-between items-start">
+              <div><h3 class="font-display text-xl text-cream italic">Presidential Suite</h3><p class="room-sub">Two-Room · Rooftop Access</p></div>
+              <div class="text-right"><p class="font-display text-gold text-lg italic">$750</p><p class="room-sub">per night</p></div>
+            </div>
+            <div class="flex gap-2 mt-3 flex-wrap"><span class="room-tag">Private Dining</span><span class="room-tag">Chef</span><span class="room-tag">Rolls-Royce</span></div>
+          </div>
+        </div>
+
+        <!-- Penthouse — spans 2 cols -->
+        <div class="showcase-room reveal-item md:col-span-2" style="animation-delay:0.4s">
+          <div class="room-visual room-visual-wide">
+            <img src="https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=1200&q=75&auto=format&fit=crop"
+                 alt="The Penthouse" class="room-img"/>
+            <div class="room-hover-overlay"><a href="#reserve" class="btn-luxury px-6 py-2 text-xs">Reserve</a></div>
+            <div class="room-badge">Our Finest</div>
+          </div>
+          <div class="room-info-box">
+            <div class="flex justify-between items-start">
+              <div><h3 class="font-display text-2xl text-cream italic">The Penthouse</h3><p class="room-sub">Full-floor Sanctuary · 360° Panoramas · Private Pool</p></div>
+              <div class="text-right"><p class="font-display text-gold text-2xl italic">$1,200</p><p class="room-sub">per night</p></div>
+            </div>
+            <div class="flex gap-2 mt-3 flex-wrap">
+              <span class="room-tag">Private Pool</span><span class="room-tag">360° Views</span><span class="room-tag">Private Staff</span><span class="room-tag">Home Theatre</span><span class="room-tag">Helipad</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- ═══ DINING ═══ -->
+  <section id="dining" class="py-28 px-6 relative overflow-hidden">
+    <div class="dining-accent absolute inset-0 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="section-tag">Culinary Arts</p>
+          <h2 class="section-title leading-tight mb-6">Dining as<br/>an Artform</h2>
+          <div class="h-px w-16 mb-8" style="background:linear-gradient(to right,#c9a84c,transparent);"></div>
+          <p class="font-body text-cream/40 text-sm leading-relaxed mb-8">Twelve distinct dining venues, each a world unto itself. From the theatre of our Michelin-starred flagship to the intimate ritual of our private sake bar, every meal is composed with intent.</p>
+          <a href="#reserve" class="btn-luxury px-10 py-3 text-sm inline-block">Make a Reservation</a>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="dining-venue reveal-item">
+            <div class="dining-img-wrap">
+              <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=75&auto=format&fit=crop" alt="Aurum Restaurant" class="dining-img"/>
+            </div>
+            <h4 class="font-display text-lg text-cream italic mt-3 mb-1">Aurum</h4>
+            <p class="font-body text-xs text-cream/35 leading-relaxed">3-star flagship. Seasonal tasting menus with wine pairing rituals.</p>
+          </div>
+          <div class="dining-venue reveal-item" style="animation-delay:0.1s;margin-top:24px;">
+            <div class="dining-img-wrap">
+              <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&q=75&auto=format&fit=crop" alt="The Gilded Bar" class="dining-img"/>
+            </div>
+            <h4 class="font-display text-lg text-cream italic mt-3 mb-1">The Gilded Bar</h4>
+            <p class="font-body text-xs text-cream/35 leading-relaxed">Pre-Prohibition cocktails. Live jazz every Friday and Saturday.</p>
+          </div>
+          <div class="dining-venue reveal-item" style="animation-delay:0.2s">
+            <div class="dining-img-wrap">
+              <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=400&q=75&auto=format&fit=crop" alt="Salon de The" class="dining-img"/>
+            </div>
+            <h4 class="font-display text-lg text-cream italic mt-3 mb-1">Salon de Th&eacute;</h4>
+            <p class="font-body text-xs text-cream/35 leading-relaxed">Afternoon tea service. Over 80 curated single-origin teas.</p>
+          </div>
+          <div class="dining-venue reveal-item" style="animation-delay:0.3s;margin-top:24px;">
+            <div class="dining-img-wrap">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=75&auto=format&fit=crop" alt="Poseidon Grill" class="dining-img"/>
+            </div>
+            <h4 class="font-display text-lg text-cream italic mt-3 mb-1">Poseidon Grill</h4>
+            <p class="font-body text-xs text-cream/35 leading-relaxed">Live-fire seafood. Ocean-front terrace. Sunset tasting menus.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GALLERY ═══ -->
+  <section id="gallery" class="py-28 px-6 bg-white/[0.015]">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="section-tag">Visual Stories</p>
+        <h2 class="section-title">Gallery</h2>
+        <div class="gold-line h-px w-24 mx-auto mt-5"></div>
+      </div>
+      <div class="gallery-grid">
+
+        <div class="gallery-item g-tall">
+          <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&q=75&auto=format&fit=crop" alt="The Grand Lobby" class="gallery-img"/>
+          <div class="gallery-overlay"><span class="gallery-label">The Grand Lobby</span></div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=75&auto=format&fit=crop" alt="Infinity Pool" class="gallery-img"/>
+          <div class="gallery-overlay"><span class="gallery-label">Penthouse Pool</span></div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=75&auto=format&fit=crop" alt="Aurum Restaurant" class="gallery-img"/>
+          <div class="gallery-overlay"><span class="gallery-label">Aurum Restaurant</span></div>
+        </div>
+
+        <div class="gallery-item g-wide">
+          <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=900&q=75&auto=format&fit=crop" alt="The Gilded Bar" class="gallery-img"/>
+          <div class="gallery-overlay"><span class="gallery-label">The Gilded Bar</span></div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=75&auto=format&fit=crop" alt="Wellness Spa" class="gallery-img"/>
+          <div class="gallery-overlay"><span class="gallery-label">Wellness Spa</span></div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=75&auto=format&fit=crop" alt="Presidential Suite" class="gallery-img"/>
+          <div class="gallery-overlay"><span class="gallery-label">Presidential Suite</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="py-28 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="section-tag">Guest Words</p>
+        <h2 class="section-title">Testimonials</h2>
+        <div class="gold-line h-px w-24 mx-auto mt-5"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="testimonial-card reveal-item">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="font-display text-cream/65 italic text-base leading-relaxed mb-5">An experience that redefined what I thought luxury could be. The concierge remembered every preference from my previous stay, three years prior.</p>
+          <div class="flex items-center gap-3">
+            <div class="testimonial-avatar">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80&auto=format&fit=crop&crop=face" alt="James Whitmore" class="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div><p class="font-body text-xs text-cream/55 font-medium">James Whitmore</p><p class="font-body text-xs text-gold/40 tracking-wider">London, UK</p></div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal-item" style="animation-delay:0.15s">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="font-display text-cream/65 italic text-base leading-relaxed mb-5">The penthouse was simply beyond description. We celebrated our anniversary surrounded by the city skyline, with a personal butler who anticipated our every wish.</p>
+          <div class="flex items-center gap-3">
+            <div class="testimonial-avatar">
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&auto=format&fit=crop&crop=face" alt="Sofia Laurent" class="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div><p class="font-body text-xs text-cream/55 font-medium">Sofia Laurent</p><p class="font-body text-xs text-gold/40 tracking-wider">Paris, France</p></div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal-item" style="animation-delay:0.3s">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="font-display text-cream/65 italic text-base leading-relaxed mb-5">Aurum's dining is a true pilgrimage for food lovers. The sommelier's pairing at the flagship was the finest I've encountered in thirty years of travelling.</p>
+          <div class="flex items-center gap-3">
+            <div class="testimonial-avatar">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&auto=format&fit=crop&crop=face" alt="Rajan Mehta" class="w-full h-full object-cover rounded-full"/>
+            </div>
+            <div><p class="font-body text-xs text-cream/55 font-medium">Rajan Mehta</p><p class="font-body text-xs text-gold/40 tracking-wider">Mumbai, India</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ RESERVATION FORM ═══ -->
+  <section id="reserve" class="py-28 px-4 bg-white/[0.015] relative overflow-hidden">
+    <!-- Subtle background image for section depth -->
+    <div class="absolute inset-0 pointer-events-none">
+      <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1920&q=40&auto=format&fit=crop"
+           alt="" class="w-full h-full object-cover object-center opacity-[0.04]"/>
+    </div>
+    <div class="max-w-6xl mx-auto relative z-10">
+      <div class="text-center mb-14">
+        <p class="section-tag">Begin Your Journey</p>
+        <h2 class="section-title">Reserve Your Stay</h2>
+        <div class="gold-line h-px w-32 mx-auto mt-5"></div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-wrap mb-10">
+        <div class="flex items-center justify-center">
+          <div class="step-item" data-step="1"><div class="step-circle">1</div><span class="step-label">Dates</span></div>
+          <div class="step-connector" id="conn-1"></div>
+          <div class="step-item" data-step="2"><div class="step-circle">2</div><span class="step-label">Room</span></div>
+          <div class="step-connector" id="conn-2"></div>
+          <div class="step-item" data-step="3"><div class="step-circle">3</div><span class="step-label">Guests</span></div>
+          <div class="step-connector" id="conn-3"></div>
+          <div class="step-item" data-step="4"><div class="step-circle">4</div><span class="step-label">Review</span></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-6 items-start">
+
+        <!-- FORM CARD -->
+        <div class="flex-1 border border-gold/20 bg-obsidian/80 backdrop-blur-sm p-8">
+          <form id="bookingForm" novalidate>
+
+            <!-- Step 1: Dates -->
+            <div class="step-panel" id="step-1">
+              <h3 class="font-display text-2xl text-cream italic mb-6">Select Your Dates</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div class="field-group">
+                  <label class="field-label block mb-2">Check-in Date <span class="text-red-400">*</span></label>
+                  <input type="date" id="checkin" class="luxury-input w-full px-4 py-3" required />
+                  <p class="error-msg" id="checkinError">Please select a check-in date.</p>
+                </div>
+                <div class="field-group">
+                  <label class="field-label block mb-2">Check-out Date <span class="text-red-400">*</span></label>
+                  <input type="date" id="checkout" class="luxury-input w-full px-4 py-3" required />
+                  <p class="error-msg" id="checkoutError">Check-out must be after check-in.</p>
+                </div>
+              </div>
+              <div id="staySummary" class="stay-pill hidden">&#10022; <span id="nightCount">0</span> night<span id="nightPlural">s</span> selected</div>
+            </div>
+
+            <!-- Step 2: Room -->
+            <div class="step-panel hidden" id="step-2">
+              <h3 class="font-display text-2xl text-cream italic mb-6">Choose Your Room</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3" id="roomCards"></div>
+              <input type="hidden" id="roomType" />
+              <p class="error-msg" id="roomTypeError">Please select a room type.</p>
+              <div id="roomPreview" class="hidden mt-5 p-5 border border-gold/20 bg-gold/5 room-preview-box">
+                <div class="flex gap-4 items-start">
+                  <div id="previewImgWrap" class="w-20 h-20 flex-shrink-0 overflow-hidden">
+                    <img id="previewImg" src="" alt="" class="w-full h-full object-cover"/>
+                  </div>
+                  <div class="flex-1">
+                    <h4 id="previewName" class="font-display text-gold text-xl italic mb-1"></h4>
+                    <p id="previewDesc" class="text-cream/50 text-xs leading-relaxed mb-3"></p>
+                    <div id="previewAmenities" class="flex flex-wrap gap-2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Guests -->
+            <div class="step-panel hidden" id="step-3">
+              <h3 class="font-display text-2xl text-cream italic mb-6">Guest Details</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div class="field-group">
+                  <label class="field-label block mb-2">Full Name <span class="text-red-400">*</span></label>
+                  <input type="text" id="guestName" class="luxury-input w-full px-4 py-3" placeholder="e.g. James Ashworth" />
+                  <p class="error-msg" id="guestNameError">Please enter your full name.</p>
+                </div>
+                <div class="field-group">
+                  <label class="field-label block mb-2">Email Address <span class="text-red-400">*</span></label>
+                  <input type="email" id="guestEmail" class="luxury-input w-full px-4 py-3" placeholder="you@example.com" />
+                  <p class="error-msg" id="guestEmailError">Please enter a valid email.</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div class="field-group">
+                  <label class="field-label block mb-2">Adults <span class="text-red-400">*</span></label>
+                  <div class="flex items-center gap-2">
+                    <button type="button" class="counter-btn" onclick="changeCount('adults',-1)">&#8722;</button>
+                    <span class="counter-val" id="adultsDisplay">1</span>
+                    <button type="button" class="counter-btn" onclick="changeCount('adults',1)">+</button>
+                    <input type="hidden" id="adults" value="1" />
+                    <span class="text-cream/30 text-xs ml-2">max 4</span>
+                  </div>
+                  <p class="error-msg" id="adultsError">At least 1 adult required.</p>
+                </div>
+                <div class="field-group">
+                  <label class="field-label block mb-2">Children <span class="text-cream/30 font-light normal-case text-xs">(under 12)</span></label>
+                  <div class="flex items-center gap-2">
+                    <button type="button" class="counter-btn" onclick="changeCount('children',-1)">&#8722;</button>
+                    <span class="counter-val" id="childrenDisplay">0</span>
+                    <button type="button" class="counter-btn" onclick="changeCount('children',1)">+</button>
+                    <input type="hidden" id="children" value="0" />
+                    <span class="text-cream/30 text-xs ml-2">max 4</span>
+                  </div>
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label block mb-2">Special Requests <span class="text-cream/30 font-light normal-case text-xs ml-1">Optional</span></label>
+                <textarea id="specialRequests" rows="3" class="luxury-input w-full px-4 py-3 resize-none"
+                  placeholder="E.g. late check-in, anniversary setup, dietary preferences..."></textarea>
+              </div>
+            </div>
+
+            <!-- Step 4: Review -->
+            <div class="step-panel hidden" id="step-4">
+              <h3 class="font-display text-2xl text-cream italic mb-6">Review &amp; Confirm</h3>
+              <div id="reviewContent" class="space-y-3 mb-6"></div>
+              <div class="border border-gold/20 p-5 bg-gold/5 mb-6">
+                <p class="field-label mb-4 flex items-center gap-3">
+                  <span class="flex-1 h-px bg-gold/20"></span>Price Breakdown<span class="flex-1 h-px bg-gold/20"></span>
+                </p>
+                <div class="space-y-2" id="priceLines"></div>
+                <div class="gold-line h-px my-4"></div>
+                <div class="flex justify-between items-center">
+                  <span class="field-label text-cream/80">Total Estimate</span>
+                  <span id="totalPrice" class="font-display text-3xl text-gold italic"></span>
+                </div>
+                <p class="text-cream/25 text-xs mt-2 font-body">* Taxes and service charges included. Final amount confirmed at check-in.</p>
+              </div>
+              <div id="successBanner" class="hidden border border-gold/40 bg-gold/10 px-6 py-5 text-center mb-4">
+                <p class="font-display text-gold text-2xl italic mb-1">Your reservation has been received.</p>
+                <p class="text-cream/50 text-xs tracking-widest">Our concierge will contact you shortly to confirm.</p>
+              </div>
+            </div>
+
+            <!-- Nav Buttons -->
+            <div class="flex items-center justify-between mt-8 pt-6 border-t border-gold/10">
+              <button type="button" id="btnBack" class="btn-ghost hidden">&#8592; Back</button>
+              <div class="ml-auto">
+                <button type="button" id="btnNext" class="btn-luxury px-10 py-3">Next &#8594;</button>
+                <button type="submit" id="btnSubmit" class="btn-luxury px-10 py-3 hidden">
+                  <span class="btn-text">Confirm Reservation</span>
+                  <span class="btn-loader hidden">Processing...</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="lg:w-72 xl:w-80 border border-gold/20 bg-obsidian/80 backdrop-blur-sm p-6 sticky top-24">
+          <p class="field-label mb-5 flex items-center gap-2">
+            <span class="flex-1 h-px bg-gold/20"></span>Your Booking<span class="flex-1 h-px bg-gold/20"></span>
+          </p>
+          <div id="sidebarEmpty" class="text-center py-8">
+            <svg viewBox="0 0 48 48" class="w-10 h-10 mx-auto mb-3 text-gold/15" fill="none" stroke="currentColor" stroke-width="1">
+              <rect x="6" y="10" width="36" height="32" rx="2"/>
+              <path d="M16 10V6M32 10V6M6 22h36"/>
+            </svg>
+            <p class="text-cream/20 text-xs tracking-widest leading-relaxed">Fill in the form<br/>to see your summary</p>
+          </div>
+          <div id="sidebarContent" class="hidden space-y-4">
+            <div class="summary-row">
+              <span class="summary-icon">
+                <svg viewBox="0 0 20 20" class="w-4 h-4 text-gold/50" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="14" height="14" rx="1"/><path d="M7 2v4M13 2v4M3 10h14"/></svg>
+              </span>
+              <div><p class="summary-key">Dates</p><p class="summary-val" id="sum-dates-val">&mdash;</p><p class="summary-sub" id="sum-nights-val"></p></div>
+            </div>
+            <div class="summary-row">
+              <span class="summary-icon" id="sum-room-icon">
+                <svg viewBox="0 0 20 20" class="w-4 h-4 text-gold/50" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10.5V17h16v-6.5M1 17h18M4 10.5V7a1 1 0 011-1h10a1 1 0 011 1v3.5"/><path d="M4 13h4v4H4zM12 13h4v4h-4z"/></svg>
+              </span>
+              <div><p class="summary-key">Room</p><p class="summary-val" id="sum-room-val">&mdash;</p><p class="summary-sub" id="sum-room-rate"></p></div>
+            </div>
+            <div class="summary-row">
+              <span class="summary-icon">
+                <svg viewBox="0 0 20 20" class="w-4 h-4 text-gold/50" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="6" r="3"/><path d="M3 18c0-3.866 3.134-7 7-7s7 3.134 7 7"/></svg>
+              </span>
+              <div><p class="summary-key">Guests</p><p class="summary-val" id="sum-guests-val">&mdash;</p></div>
+            </div>
+            <div class="summary-row">
+              <span class="summary-icon">
+                <svg viewBox="0 0 20 20" class="w-4 h-4 text-gold/50" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+              </span>
+              <div><p class="summary-key">Guest</p><p class="summary-val" id="sum-name-val">&mdash;</p><p class="summary-sub" id="sum-email-val"></p></div>
+            </div>
+          </div>
+          <div id="sidebarPriceWrap" class="hidden">
+            <div class="gold-line h-px my-5"></div>
+            <div class="flex justify-between items-center">
+              <span class="text-cream/40 text-xs tracking-widest uppercase">Estimate</span>
+              <span id="sidebarTotal" class="font-display text-2xl text-gold italic">&mdash;</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="border-t border-gold/10 bg-white/[0.01] py-16 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+        <div>
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-9 h-9 border border-gold/50 flex items-center justify-center"
+                 style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
+              <span class="font-display text-gold text-sm italic">A</span>
+            </div>
+            <span class="font-display text-cream/90 text-lg italic">Aurum Grand</span>
+          </div>
+          <p class="font-body text-cream/30 text-xs leading-relaxed">A century of refinement. A legacy of extraordinary hospitality.</p>
+        </div>
+        <div>
+          <p class="field-label mb-4">Explore</p>
+          <ul class="space-y-2">
+            <li><a href="#experience" class="footer-link">Experience</a></li>
+            <li><a href="#rooms"      class="footer-link">Rooms &amp; Suites</a></li>
+            <li><a href="#dining"     class="footer-link">Dining</a></li>
+            <li><a href="#gallery"    class="footer-link">Gallery</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="field-label mb-4">Services</p>
+          <ul class="space-y-2">
+            <li><span class="footer-link">Concierge</span></li>
+            <li><span class="footer-link">Spa &amp; Wellness</span></li>
+            <li><span class="footer-link">Private Events</span></li>
+            <li><span class="footer-link">Airport Transfer</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="field-label mb-4">Contact</p>
+          <ul class="space-y-2">
+            <li><span class="footer-link">+1 800 AURUM GH</span></li>
+            <li><span class="footer-link">concierge@aurumgrand.com</span></li>
+            <li><span class="footer-link">1 Grand Boulevard</span></li>
+            <li><span class="footer-link">New York, NY 10001</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="h-px w-full mb-6" style="background:linear-gradient(to right,transparent,rgba(201,168,76,0.3),transparent);"></div>
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="font-body text-cream/20 text-xs tracking-widest">&copy; 2024 Aurum Grand Hotel. All rights reserved.</p>
+        <div class="flex gap-6">
+          <span class="footer-link cursor-pointer">Privacy Policy</span>
+          <span class="footer-link cursor-pointer">Terms of Service</span>
+          <span class="footer-link cursor-pointer">Cookie Policy</span>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
